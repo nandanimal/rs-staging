@@ -54,6 +54,10 @@ export default function Hero({ projects }) {
     const mobileCoverUrl = project.mobileCoverPhoto
         ? urlFor(project.mobileCoverPhoto).width(750).quality(85).url()
         : coverUrl;
+    const hotspot = project.coverPhoto?.hotspot;
+    const coverBgPosition = hotspot
+        ? `${hotspot.x * 100}% ${hotspot.y * 100}%`
+        : "center";
 
     const handleTouchStart = (e) => {
         touchStartX.current = e.touches[0].clientX;
@@ -100,8 +104,8 @@ export default function Hero({ projects }) {
             <AnimatePresence>
                 <motion.div
                     key={current}
-                    className="absolute inset-0 bg-cover bg-center scale-110 hidden md:block"
-                    style={{ backgroundImage: `url(${coverUrl})`, y: parallaxY }}
+                    className="absolute inset-0 bg-cover scale-110 hidden md:block"
+                    style={{ backgroundImage: `url(${coverUrl})`, backgroundPosition: coverBgPosition, y: parallaxY }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -222,7 +226,7 @@ export default function Hero({ projects }) {
                                                     .height(32)
                                                     .url()}
                                                 alt=""
-                                                className="h-[12px] md:h-[16px] w-auto"
+                                                className="h-[12px] md:h-[16px] w-auto cursor-pointer"
                                             />
                                         ))}
                                     </motion.div>

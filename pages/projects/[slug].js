@@ -113,6 +113,11 @@ export default function ProjectPage({ project, prevProject, nextProject }) {
         ? urlFor(project.mobileCoverPhoto).width(750).quality(85).url()
         : coverUrl;
 
+    const hotspot = project.coverPhoto?.hotspot;
+    const coverBgPosition = hotspot
+        ? `${hotspot.x * 100}% ${hotspot.y * 100}%`
+        : "center";
+
     // Derived color tokens (hex alpha notation)
     const t = sectionText;
     const muted = t + "80"; // 50% — labels
@@ -138,9 +143,10 @@ export default function ProjectPage({ project, prevProject, nextProject }) {
                 {/* Desktop hero */}
                 {coverUrl && (
                     <motion.div
-                        className="absolute inset-0 bg-cover bg-center scale-110 hidden md:block"
+                        className="absolute inset-0 bg-cover scale-110 hidden md:block"
                         style={{
                             backgroundImage: `url(${coverUrl})`,
+                            backgroundPosition: coverBgPosition,
                             y: parallaxY,
                         }}
                     />

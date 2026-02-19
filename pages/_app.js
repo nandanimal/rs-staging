@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import NavBar from "@/components/NavBar";
@@ -8,11 +8,13 @@ import Fly from "@/components/Fly";
 
 export default function App({ Component, pageProps }) {
     const router = useRouter();
+    const lenisRef = useRef(null);
 
     useEffect(() => {
         const initLenis = async () => {
             const Lenis = (await import("lenis")).default;
             const lenis = new Lenis();
+            lenisRef.current = lenis;
 
             function raf(time) {
                 lenis.raf(time);
@@ -24,13 +26,18 @@ export default function App({ Component, pageProps }) {
             return lenis;
         };
 
-        let lenisInstance;
-        initLenis().then((instance) => {
-            lenisInstance = instance;
-        });
+        initLenis();
+
+        const handleRouteChange = () => {
+            lenisRef.current?.scrollTo(0, { immediate: true });
+        };
+
+        router.events.on("routeChangeComplete", handleRouteChange);
 
         return () => {
-            lenisInstance?.destroy();
+            router.events.off("routeChangeComplete", handleRouteChange);
+            lenisRef.current?.destroy();
+            lenisRef.current = null;
         };
     }, []);
 
