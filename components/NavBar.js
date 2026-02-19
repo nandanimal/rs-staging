@@ -246,7 +246,7 @@ export default function NavBar() {
                                     {link.disabled ? (
                                         <div className="flex items-center gap-[12px] bg-black text-white/40 font-cool text-[48px] leading-none uppercase cursor-default">
                                             {link.label}
-                                            <span className="font-cool text-[16px] leading-none uppercase text-pink">
+                                            <span className="font-cool text-[16px] leading-none uppercase text-black bg-pink -rotate-3 -ml-24">
                                                 COMING SOON
                                             </span>
                                         </div>

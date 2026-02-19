@@ -30,6 +30,10 @@
     --pink: #ff68dc;
 }
 
+html {
+    background-color: var(--pink);
+}
+
 @theme inline {
     --breakpoint-nav: 1210px;
 
