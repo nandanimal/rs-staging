@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: "Coolvetica";
+    src: url("/fonts/coolvetica rg.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Providence Sans";
+    src: url("/fonts/Providence Sans Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "NeueHaas";
+    src: url("/fonts/NeueHaasDisplayLight.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #000000;
+    --foreground: #ffffff;
+    --pink: #ff68dc;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --breakpoint-nav: 1210px;
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-black: #000000;
+    --color-red: #eb4527;
+    --color-green: #b0dab5;
+    --color-yellow: #e5e94b;
+    --color-brown: #894a32;
+    --color-blue: #4393f6;
+    --color-pink: #ff68dc;
+    --color-white: #ffffff;
+    --color-tan: #e5decf;
+    --color-cream: #fdf9f1;
+    --color-brownblack: #231f20;
+
+    --font-cool: "Coolvetica", sans-serif;
+    --font-prov: "Providence Sans", sans-serif;
+    --font-new: "NeueHaas", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes progress-bar {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+.animate-progress-bar {
+    animation: progress-bar 8s linear forwards;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+.modern-padding {
+    padding: 2rem;
+}
+
+@media (max-width: 640px) {
+    .modern-padding {
+        padding: 1rem;
+    }
+}
+
+.page-header {
+    margin-top: 4rem;
+}
+
+.nav-item {
+    padding-right: 2rem;
 }
