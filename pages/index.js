@@ -16,8 +16,10 @@ export async function getStaticProps() {
 export default function Home({ projects, featuredProjects }) {
     return (
         <>
-            <Hero projects={featuredProjects} />
-            <div className="bg-[#fdf9f1] relative text-black modern-padding pt-[86px] md:pt-[147px]">
+            <div className="">
+                <Hero projects={featuredProjects} />
+            </div>
+            <div id="projects" className="bg-[#fdf9f1] relative text-black modern-padding pt-[86px] md:pt-[147px]">
                 <h2 className="font-cool text-[72px] md:text-[144px] leading-[0.79] uppercase text-black pb-0 mb-[40px] md:mb-[73px] font-normal page-header">
                     Projects
                 </h2>

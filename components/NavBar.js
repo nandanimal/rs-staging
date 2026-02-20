@@ -93,21 +93,53 @@ const socialLinks = [
 
 export default function NavBar() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [getInTouchHovered, setGetInTouchHovered] = useState(false);
     const router = useRouter();
     const [activePath, setActivePath] = useState(router.pathname);
+    const [projectsInView, setProjectsInView] = useState(false);
 
     useEffect(() => {
         const timeout = setTimeout(() => setActivePath(router.pathname), 300);
         return () => clearTimeout(timeout);
     }, [router.pathname]);
 
-    const isActive = (href) =>
-        activePath === href || activePath.startsWith(href + "/");
+    useEffect(() => {
+        document.body.style.overflow = menuOpen ? "hidden" : "";
+        document.documentElement.style.overflow = menuOpen ? "hidden" : "";
+        return () => {
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+        };
+    }, [menuOpen]);
+
+    useEffect(() => {
+        if (router.pathname !== "/") {
+            setProjectsInView(false);
+            return;
+        }
+        const el = document.getElementById("projects");
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => setProjectsInView(entry.isIntersecting),
+            { rootMargin: "0px 0px -95% 0px", threshold: 0 },
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [router.pathname]);
+
+    const isActive = (href) => {
+        if (href === "/projects" && router.pathname === "/" && projectsInView)
+            return true;
+        return activePath === href || activePath.startsWith(href + "/");
+    };
 
     return (
         <>
             {/* Desktop Nav */}
-            <nav className="items-center gap-px w-full h-[16px] fixed top-0 left-0 z-50 hidden nav:flex">
+            <nav
+                className="items-center gap-px w-full h-[16px] fixed top-0 left-0 z-50 hidden nav:flex modern-padding "
+                style={{ paddingBottom: "0 !important" }}
+            >
                 <Link
                     href="/"
                     className="flex items-center bg-pink w-[105px] h-[16px] px-[10px] shrink-0"
@@ -146,7 +178,7 @@ export default function NavBar() {
                         >
                             {link.label}
                         </Link>
-                    )
+                    ),
                 )}
                 {socialLinks.map((social) => (
                     <a
@@ -173,162 +205,218 @@ export default function NavBar() {
             </nav>
 
             {/* Mobile Nav */}
-            <nav className="items-center gap-px w-full h-[16px] fixed top-0 left-0 z-50 flex nav:hidden">
-                <Link
-                    href="/"
-                    className="flex items-center bg-pink w-[105px] h-[16px] px-[10px] shrink-0"
-                >
-                    <Image
-                        src="/images/logo.png"
-                        alt="Logo"
-                        width={85}
-                        height={15}
-                        priority
-                    />
-                </Link>
-                <button
-                    className="flex items-center justify-end gap-[8px] flex-1 bg-black border-none cursor-pointer h-[16px] p-0"
-                    onClick={() => setMenuOpen(!menuOpen)}
-                    aria-label={menuOpen ? "Close menu" : "Open menu"}
-                >
-                    {menuOpen ? (
-                        <span className="font-cool text-[24px] leading-[16px] text-white uppercase">
-                            Hide
-                        </span>
-                    ) : (
-                        <>
-                            <Image
+            <nav className="items-center gap-px fixed top-0 flex flex-col w-full left-0 z-50 flex nav:hidden modern-padding">
+                <div className="top-level-nav-contents flex items-center w-full h-[16px]">
+                    <Link
+                        href="/"
+                        className="flex items-center bg-pink w-[105px] h-[16px] px-[10px] shrink-0"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        <Image
+                            src="/images/logo.png"
+                            alt="Logo"
+                            width={85}
+                            height={15}
+                            priority
+                        />
+                    </Link>
+                    <button
+                        className="flex items-center justify-end gap-[8px] flex-1 bg-black border-none cursor-pointer h-[16px] p-0"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-label={menuOpen ? "Close menu" : "Open menu"}
+                    >
+                        {menuOpen ? (
+                            <span className="font-cool text-[24px] leading-[16px] text-white uppercase">
+                                Hide
+                            </span>
+                        ) : (
+                            <>
+                                {/* <Image
                                 src="/images/menu-hamburger.svg"
                                 alt=""
                                 width={31}
                                 height={9}
-                            />
-                            <span className="font-cool text-[24px] leading-[16px] text-white uppercase">
-                                Menu
-                            </span>
-                        </>
-                    )}
-                </button>
-            </nav>
-
-            {/* Mobile Menu Overlay */}
-            <AnimatePresence>
-                {menuOpen && (
-                    <motion.div
-                        className="fixed top-[17px] left-0 right-0 bottom-0 bg-black z-40 flex flex-col gap-px"
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        variants={{
-                            hidden: { opacity: 0 },
-                            visible: {
-                                opacity: 1,
-                                transition: {
-                                    staggerChildren: 0.06,
-                                    delayChildren: 0.1,
-                                },
-                            },
-                        }}
-                    >
-                        <div className="flex flex-col gap-px">
-                            {navLinks.map((link) => (
-                                <motion.div
-                                    key={link.label}
-                                    variants={{
-                                        hidden: { opacity: 0, y: 12 },
-                                        visible: { opacity: 1, y: 0 },
-                                    }}
-                                    transition={{
-                                        duration: 0.3,
-                                        ease: [0.25, 0.1, 0.25, 1],
-                                    }}
-                                >
-                                    {link.disabled ? (
-                                        <div className="flex items-center gap-[12px] bg-black text-white/40 font-cool text-[48px] leading-none uppercase cursor-default">
-                                            {link.label}
-                                            <span className="font-cool text-[16px] leading-none uppercase text-black bg-pink -rotate-3 -ml-24">
-                                                COMING SOON
-                                            </span>
-                                        </div>
-                                    ) : (
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center font-cool text-[48px] leading-none uppercase no-underline transition-colors duration-200 ${
-                                                isActive(link.href)
-                                                    ? `${link.activeBg} ${link.activeText}`
-                                                    : `bg-black text-white ${link.hoverBg} ${link.hoverText}`
-                                            }`}
-                                            onClick={() => setMenuOpen(false)}
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    )}
-                                </motion.div>
-                            ))}
-                        </div>
-                        <div className="flex flex-col gap-px">
-                            {[
-                                {
-                                    label: "Instagram",
-                                    href: "https://instagram.com",
-                                },
-                                {
-                                    label: "Facebook",
-                                    href: "https://facebook.com",
-                                },
-                                {
-                                    label: "YouTube",
-                                    href: "https://youtube.com",
-                                },
-                            ].map((social) => (
-                                <motion.div
-                                    key={social.label}
-                                    variants={{
-                                        hidden: { opacity: 0, y: 12 },
-                                        visible: { opacity: 1, y: 0 },
-                                    }}
-                                    transition={{
-                                        duration: 0.3,
-                                        ease: [0.25, 0.1, 0.25, 1],
-                                    }}
-                                >
-                                    <a
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center bg-black text-white font-cool text-[48px] leading-none uppercase no-underline"
-                                    >
-                                        {social.label}
-                                    </a>
-                                </motion.div>
-                            ))}
-                        </div>
+                            /> */}
+                                <span className="font-cool text-[24px] leading-[16px] text-white uppercase">
+                                    Menu
+                                </span>
+                            </>
+                        )}
+                    </button>
+                </div>
+                {/* Mobile Menu Dropdown */}
+                <AnimatePresence>
+                    {menuOpen && (
                         <motion.div
-                            className="mt-auto"
-                            variants={{
-                                hidden: { opacity: 0, y: 12 },
-                                visible: { opacity: 1, y: 0 },
+                            className="w-full z-40 overflow-hidden"
+                            initial={{ height: 0 }}
+                            animate={{
+                                height: "auto",
+                                transition: {
+                                    duration: 0.3,
+                                    ease: [0.25, 0.1, 0.25, 1],
+                                },
                             }}
-                            transition={{
-                                duration: 0.3,
-                                ease: [0.25, 0.1, 0.25, 1],
+                            exit={{
+                                height: 0,
+                                transition: {
+                                    duration: 0.25,
+                                    ease: [0.25, 0.1, 0.25, 1],
+                                },
                             }}
                         >
-                            <Link
-                                href="/contact"
-                                className={`flex items-center justify-end font-cool text-[48px] leading-none uppercase no-underline transition-colors duration-200 ${
-                                    isActive("/contact")
-                                        ? "bg-brown text-yellow"
-                                        : "bg-black text-white hover:bg-brown hover:text-yellow"
-                                }`}
-                                onClick={() => setMenuOpen(false)}
+                            <motion.div
+                                className="flex flex-col gap-px"
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                                variants={{
+                                    hidden: { opacity: 0 },
+                                    visible: {
+                                        opacity: 1,
+                                        transition: {
+                                            staggerChildren: 0.05,
+                                            delayChildren: 0.08,
+                                        },
+                                    },
+                                }}
                             >
-                                GET IN TOUCH
-                            </Link>
+                                {[{ label: "HOME", href: "/", activeBg: "bg-pink", activeText: "text-black", hoverBg: "hover:bg-pink", hoverText: "hover:text-black" }, ...navLinks].map((link) => (
+                                    <motion.div
+                                        key={link.label}
+                                        variants={{
+                                            hidden: { opacity: 0, y: 8 },
+                                            visible: {
+                                                opacity: 1,
+                                                y: 0,
+                                                transition: {
+                                                    duration: 0.25,
+                                                    ease: [0.25, 0.1, 0.25, 1],
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        {link.disabled ? (
+                                            <div className="flex items-center gap-[12px] bg-black text-white/40 font-cool text-[48px] leading-[0.67] uppercase cursor-default">
+                                                {link.label}
+                                                <span className="font-cool text-[16px] leading-none uppercase text-black bg-pink -rotate-3 -ml-24">
+                                                    COMING SOON
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <Link
+                                                href={link.href}
+                                                className={`flex items-center font-cool text-[48px] leading-[0.67] uppercase no-underline transition-colors duration-200 ${
+                                                    isActive(link.href)
+                                                        ? `${link.activeBg} ${link.activeText}`
+                                                        : `bg-black text-white ${link.hoverBg} ${link.hoverText}`
+                                                }`}
+                                                onClick={() =>
+                                                    setMenuOpen(false)
+                                                }
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        )}
+                                    </motion.div>
+                                ))}
+                                {/* <motion.div
+                                    className="h-[96px] bg-black"
+                                    variants={{
+                                        hidden: { opacity: 0 },
+                                        visible: { opacity: 1 },
+                                    }}
+                                /> */}
+                                {[
+                                    {
+                                        label: "Instagram",
+                                        href: "https://instagram.com",
+                                    },
+                                    {
+                                        label: "Facebook",
+                                        href: "https://facebook.com",
+                                    },
+                                    {
+                                        label: "YouTube",
+                                        href: "https://youtube.com",
+                                    },
+                                ].map((social) => (
+                                    <motion.div
+                                        key={social.label}
+                                        variants={{
+                                            hidden: { opacity: 0, y: 8 },
+                                            visible: {
+                                                opacity: 1,
+                                                y: 0,
+                                                transition: {
+                                                    duration: 0.25,
+                                                    ease: [0.25, 0.1, 0.25, 1],
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <a
+                                            href={social.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center bg-black text-white font-cool text-[48px] leading-[0.67] uppercase no-underline transition-opacity duration-200 hover:opacity-80"
+                                        >
+                                            {social.label}
+                                        </a>
+                                    </motion.div>
+                                ))}
+                                {/* <motion.div
+                                    className="h-[96px] bg-black"
+                                    variants={{
+                                        hidden: { opacity: 0 },
+                                        visible: { opacity: 1 },
+                                    }}
+                                /> */}
+                                <motion.div
+                                    variants={{
+                                        hidden: { opacity: 0, y: 8 },
+                                        visible: {
+                                            opacity: 1,
+                                            y: 0,
+                                            transition: {
+                                                duration: 0.25,
+                                                ease: [0.25, 0.1, 0.25, 1],
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <Link
+                                        href="/contact"
+                                        className={`relative flex items-center justify-end overflow-hidden font-cool text-[48px] leading-[0.67] uppercase no-underline transition-colors duration-200 ${
+                                            isActive("/contact")
+                                                ? "bg-brown text-yellow"
+                                                : "bg-black text-white hover:bg-brown hover:text-yellow"
+                                        }`}
+                                        onClick={() => setMenuOpen(false)}
+                                        onMouseEnter={() => setGetInTouchHovered(true)}
+                                        onMouseLeave={() => setGetInTouchHovered(false)}
+                                    >
+                                        GET IN TOUCH
+                                        <AnimatePresence>
+                                            {getInTouchHovered && (
+                                                <motion.span
+                                                    initial={{ x: 80, opacity: 0 }}
+                                                    animate={{ x: 0, opacity: 1 }}
+                                                    exit={{ x: 80, opacity: 0 }}
+                                                    transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                                                    className="ml-3"
+                                                >
+                                                    ↗
+                                                </motion.span>
+                                            )}
+                                        </AnimatePresence>
+                                    </Link>
+                                </motion.div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    )}
+                </AnimatePresence>
+            </nav>
         </>
     );
 }

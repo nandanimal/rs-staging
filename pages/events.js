@@ -118,7 +118,7 @@ function EventCardMobile({ event }) {
 
     return (
         <div className="border-t border-black ">
-            <div className="p-px">
+            <div className="">
                 {event.coverPhoto ? (
                     <img
                         className="w-full h-[256px] object-cover block"

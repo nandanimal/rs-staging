@@ -197,7 +197,7 @@ function MobileFilters({ categories, counts, active, onSelect }) {
                                     />
                                     <span className="relative flex gap-[2px] items-start">
                                         <span>{cat}</span>
-                                        <span className="font-prov text-md">
+                                        <span className="font-prov text-sm">
                                             [{counts[cat] || 0}]
                                         </span>
                                     </span>
@@ -236,7 +236,7 @@ function MobileFilters({ categories, counts, active, onSelect }) {
                                 />
                                 <span className="relative flex gap-[2px] items-start">
                                     <span>view all</span>
-                                    <span className="font-prov text-[8px]">
+                                    <span className="font-prov text-sm">
                                         [{counts.total || 0}]
                                     </span>
                                 </span>
@@ -278,7 +278,7 @@ export default function ProjectsGrid({ projects }) {
 
             {/* Desktop layout */}
             <div className="hidden relative md:flex gap-[52px]">
-                <div className="sticky top-[3rem] self-start">
+                <div className="sticky top-[4rem] self-start">
                     <FilterSidebar
                         categories={CATEGORIES}
                         counts={counts}

@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import {
+    motion,
+    AnimatePresence,
+    useScroll,
+    useTransform,
+} from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { urlFor } from "@/sanity/lib/image";
@@ -93,7 +98,7 @@ export default function Hero({ projects }) {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full h-screen overflow-hidden cursor-default select-none"
+            className="relative w-full h-[95svh] md:h-screen overflow-hidden cursor-default select-none"
             onClick={handleClick}
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setHoverZone(null)}
@@ -105,7 +110,11 @@ export default function Hero({ projects }) {
                 <motion.div
                     key={current}
                     className="absolute inset-0 bg-cover scale-110 hidden md:block"
-                    style={{ backgroundImage: `url(${coverUrl})`, backgroundPosition: coverBgPosition, y: parallaxY }}
+                    style={{
+                        backgroundImage: `url(${coverUrl})`,
+                        backgroundPosition: coverBgPosition,
+                        y: parallaxY,
+                    }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -117,7 +126,10 @@ export default function Hero({ projects }) {
                 <motion.div
                     key={current}
                     className="absolute inset-0 bg-cover bg-center scale-110 md:hidden"
-                    style={{ backgroundImage: `url(${mobileCoverUrl})`, y: parallaxY }}
+                    style={{
+                        backgroundImage: `url(${mobileCoverUrl})`,
+                        y: parallaxY,
+                    }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -150,7 +162,7 @@ export default function Hero({ projects }) {
             </div>
 
             {/* Overlay Container */}
-            <div className="overlay-container w-full h-full z-10 flex justify-between flex-col px-4 py-8 md:p-10">
+            <div className="overlay-container w-full h-full z-10 flex justify-between flex-col px-4 py-8 md:px-10 md:py-16">
                 {/* Slide counter */}
                 <span className="relative font-prov text-md text-white uppercase z-[5]">
                     {current + 1}/{total}
@@ -185,33 +197,33 @@ export default function Hero({ projects }) {
                                 className="no-underline"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                            <motion.div
-                                className="flex items-baseline gap-[8px] bg-black leading-none w-fit"
-                                variants={textLineVariants}
-                                transition={{
-                                    duration: 0.45,
-                                    ease: [0.76, 0, 0.24, 1],
-                                }}
-                            >
-                                <span className="font-cool text-4xl md:text-7xl lg:text-8xl leading-[0.67] text-white uppercase">
-                                    {project.artist}
-                                </span>
-                            </motion.div>
-                            <motion.div
-                                className="flex items-start gap-[8px] bg-black leading-none w-fit"
-                                variants={textLineVariants}
-                                transition={{
-                                    duration: 0.45,
-                                    ease: [0.76, 0, 0.24, 1],
-                                }}
-                            >
-                                <span className="font-cool text-5xl md:text-7xl lg:text-8xl leading-[0.67] text-white uppercase w-fit">
-                                    &ldquo;{project.title}&rdquo;
-                                </span>
-                                <span className="font-prov text-sm md:text-lg text-white">
-                                    [{year}]
-                                </span>
-                            </motion.div>
+                                <motion.div
+                                    className="flex items-baseline gap-[8px] bg-black leading-none w-fit"
+                                    variants={textLineVariants}
+                                    transition={{
+                                        duration: 0.45,
+                                        ease: [0.76, 0, 0.24, 1],
+                                    }}
+                                >
+                                    <span className="font-cool text-4xl md:text-7xl lg:text-8xl leading-[0.67] text-white uppercase">
+                                        {project.artist}
+                                    </span>
+                                </motion.div>
+                                <motion.div
+                                    className="flex items-start gap-[8px] bg-black leading-none w-fit"
+                                    variants={textLineVariants}
+                                    transition={{
+                                        duration: 0.45,
+                                        ease: [0.76, 0, 0.24, 1],
+                                    }}
+                                >
+                                    <span className="font-cool text-5xl md:text-7xl lg:text-8xl leading-[0.67] text-white uppercase w-fit">
+                                        &ldquo;{project.title}&rdquo;
+                                    </span>
+                                    <span className="font-prov text-sm md:text-lg text-white">
+                                        [{year}]
+                                    </span>
+                                </motion.div>
                             </Link>
                             {project.networks &&
                                 project.networks.length > 0 && (

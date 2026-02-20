@@ -21,42 +21,38 @@ export default function Footer() {
         <footer className="bg-black flex flex-col gap-[40px] md:gap-8 items-center w-full modern-padding">
             {/* Wordmark Banner */}
             <div className="w-full overflow-hidden">
-                <div
-                    className="bg-cream w-full h-[120px] md:h-[224px]"
-                    style={{
-                        maskImage: "url('/images/rotten-science-wordmark.png')",
-                        WebkitMaskImage:
-                            "url('/images/rotten-science-wordmark.png')",
-                        maskSize: "100% auto",
-                        WebkitMaskSize: "100% auto",
-                        maskRepeat: "no-repeat",
-                        WebkitMaskRepeat: "no-repeat",
-                        maskPosition: "center",
-                        WebkitMaskPosition: "center",
-                    }}
+                <img
+                    src="/images/rotten-science-wordmark.png"
+                    alt="Rotten Science Wordmark"
                 />
             </div>
 
             {/* Middle Section */}
-            <div className="flex flex-col md:flex-row items-start justify-between w-full gap-[40px] md:gap-0">
+            <div className="flex flex-col lg:flex-row items-start justify-between w-full gap-[40px] lg:gap-8">
                 {/* Tagline */}
                 <div className="relative">
-                    <p className="font-cool text-[36px] md:text-[64px] text-white uppercase leading-[0.8] max-w-[736px]">
+                    <p className="font-cool text-[36px] md:text-[64px] text-white uppercase leading-[0.8] max-w-[736px] text-pretty">
                         COMEDY, DEPRAVITY, AND ALL THINGS ROTTEN.
                     </p>
                 </div>
 
                 {/* Links */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-16 items-start">
+                <div className="grid grid-cols-2 xl:grid-cols-3 gap-8 xl:gap-16 items-start">
                     {/* Nav Links */}
                     <div className="flex flex-col gap-[24px] md:gap-[48px]">
                         {navLinks.map((link) =>
                             link.disabled ? (
-                                <div key={link.label} className="flex items-center gap-[8px] cursor-default">
+                                <div
+                                    key={link.label}
+                                    className="flex items-center gap-[8px] cursor-default"
+                                >
                                     <span className="font-cool text-[24px] md:text-[32px] text-white/40 uppercase leading-none">
                                         {link.label}
                                     </span>
-                                    <span className="font-cool text-[10px] md:text-[12px] text-pink uppercase leading-none">
+                                    <span
+                                        className="font-cool text-[10px] md:text-[12px] text-black bg-pink uppercase leading-none -rotate-3 -ml-12"
+                                        style={{ whiteSpace: "nowrap" }}
+                                    >
                                         COMING SOON
                                     </span>
                                 </div>
@@ -64,11 +60,11 @@ export default function Footer() {
                                 <TextHoverLink
                                     key={link.label}
                                     href={link.href}
-                                    className="font-cool text-[24px] md:text-[32px] text-white uppercase leading-none"
+                                    className="font-cool text-3xl md:text-[32px] text-white uppercase leading-none"
                                 >
                                     {link.label}
                                 </TextHoverLink>
-                            )
+                            ),
                         )}
                     </div>
 
@@ -79,7 +75,7 @@ export default function Footer() {
                                 key={social.label}
                                 href={social.href}
                                 external
-                                className="font-cool text-[24px] md:text-[32px] text-white uppercase leading-none"
+                                className="font-cool text-3xl md:text-[32px] text-white uppercase leading-none"
                             >
                                 {social.label}
                             </TextHoverLink>
@@ -89,7 +85,7 @@ export default function Footer() {
                     {/* Get In Touch */}
                     <TextHoverLink
                         href="/contact"
-                        className="inline-flex items-center gap-[6px] whitespace-nowrap font-cool text-[24px] md:text-[32px] text-white uppercase leading-none"
+                        className="inline-flex items-center gap-[6px] whitespace-nowrap font-cool text-3xl md:text-[32px] text-white uppercase leading-none"
                     >
                         {"contact\u00a0"}
                         {/* <Image
@@ -103,7 +99,7 @@ export default function Footer() {
             </div>
 
             {/* Bottom Bar */}
-            <div className="flex flex-col mt-8 md:flex-row items-center justify-between w-full gap-[16px] md:gap-0">
+            <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-[16px] lg:gap-0 mt-16">
                 {/* Logo + Copyright */}
                 <div className="flex gap-[16px] items-center">
                     <Image

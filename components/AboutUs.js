@@ -21,9 +21,9 @@ export default function AboutUs() {
                 about us
             </h2>
 
-            <div className="flex flex-col md:flex-row min-h-scree md:gap-[34px]">
+            <div className="flex flex-col md:flex-row min-h-scree gap-6 md:gap-[34px] mb-32">
                 {/* Photo */}
-                <div className="relative w-full w-full overflow-hidden">
+                <div className="relative w-full overflow-hidden h-[300px] md:h-auto">
                     <motion.div
                         className="absolute inset-[-15%_0] bg-cover bg-center"
                         style={{

@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
@@ -43,6 +44,10 @@ export default function App({ Component, pageProps }) {
 
     return (
         <>
+            <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+                <meta name="theme-color" content="#000000" />
+            </Head>
             <NavBar />
             <AnimatePresence mode="wait">
                 <motion.main
